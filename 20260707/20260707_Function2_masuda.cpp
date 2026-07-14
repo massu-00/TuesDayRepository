@@ -28,7 +28,7 @@ void Game()
 			Random(player[i]);
 			if (player[i] != PLAYER.selectnum[player[i]])
 			{
-				PLAYER.selectnum[player[i]] = player[i];
+				PLAYER.selectnum[player[i]] = player[i];//一度決まった数字を保存して被らないようにする
 				break;
 			}
 
@@ -39,9 +39,9 @@ void Game()
 		while (true)
 		{
 			Random(NPC[i]);
-			if (NPC[i] != ENEMY.selectnum[i])
+			if (NPC[i] != ENEMY.selectnum[NPC[i]])
 			{
-				ENEMY.selectnum[i] = NPC[i];
+				ENEMY.selectnum[NPC[i]] = NPC[i];//プレイヤーと同様
 				break;
 			}
 		}
@@ -65,7 +65,7 @@ void Game()
 		cout << "\n";
 		for (int i = 0; i < 3; i++)
 		{
-			playerHITcount += Judge(ans[i] ,NPCans[i]);
+			playerHITcount += Judge(ans[i] ,NPC[i]);
 		}
 		if (playerHITcount != 3)
 		{
@@ -73,7 +73,7 @@ void Game()
 		}
 		
 
-		//NPCの予想(許してください、これ関数を書き直すのはさすがに苦です)
+		//NPCの予想
 		if (playerHITcount != 3)
 		{
 			cout << "\nＮＰＣの番です" << endl;
@@ -96,18 +96,23 @@ void Game()
 			cout << "\n";
 			for (int i = 0; i < 3; i++)
 			{
+				NPCHITcount += Judge(NPCans[i], player[i]);
+			}
+
+			//判定
+			cout << "\n";
+			for (int i = 0; i < 3; i++)
+			{
 				if (NPCans[i] == player[i])
 				{
-					cout << i + 1 << "個目:HIT" << endl;
 					NPCHITcount++;
 					NPCansstock[i] = NPCans[i];//正解した数字の場所を覚える
 				}
 				else
 				{
-					cout << i + 1 << "個目:Blow" << endl;
 					for (int j = 0; j < 3; j++)
 					{
-						slot[j][NPCans[j]] = NPCans[i];
+						slot[j][NPCans[j]] = NPCans[i];//間違えた数字の場所を覚える
 					}
 
 				}
